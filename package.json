@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "name": "@ditto-lang/actions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ditto-lang/actions.git"
+  },
+  "version": "0.0.1",
+  "description": "GitHub actions for the ditto programming language",
+  "keywords": [
+    "ditto",
+    "ditto-lang",
+    "actions",
+    "setup"
+  ],
+  "author": "Jordan Mackie <jordan@nous.co> (https://github.com/jmackie)",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "postinstall": "husky install",
+    "build:all": "npm run build:setup-ninja",
+    "build:setup-ninja": "ncc build ./src/setup-ninja/index.ts --minify --out setup-ninja",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@actions/core": "1.6.0",
+    "@actions/tool-cache": "1.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.22",
+    "@vercel/ncc": "0.33.3",
+    "prettier": "2.6.0",
+    "typescript": "4.6.2"
+  },
+  "lint-staged": {
+    "*.{yml,yaml,ts,md,json}": "prettier --write"
+  },
+  "optionalDependencies": {
+    "husky": "7.0.4",
+    "lint-staged": "12.3.7"
+  }
+}

@@ -1,0 +1,4 @@
+node_modules
+
+# Generated (and minifed) files
+setup-ninja/index.js

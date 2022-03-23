@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-up-to-date:
+    name: Check generated files are up to date
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+      - run: npm install --omit optional --ignore-scripts
+      - run: npm run build:all
+      - uses: tj-actions/verify-changed-files@v9
+        id: verify-changed-files
+        with:
+          files: |
+            setup-ninja/index.js
+      - if: steps.verify-changed-files.outputs.files_changed == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Generated files not up to date!')
+
+  check-formatting:
+    name: Check prettier 💅
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+      - run: npm install --omit optional --ignore-scripts
+      - run: npm run format:check
+
+  setup-ninja:
+    name: Test setup-ninja action 🧪
+    needs: [check-up-to-date]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            ninja-platform: linux
+          - os: macos-latest
+            ninja-platform: mac
+          - os: windows-latest
+            ninja-platform: win
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Ninja 🥷
+        id: setup-ninja
+        uses: ./setup-ninja
+        with:
+          platform: ${{ matrix.ninja-platform }}
+      - name: Print ninja version
+        run: ninja --version
+      - name: Print ninja.exe version
+        run: ninja.exe --version
+      - name: Print ninja output version
+        run: ${{ steps.setup-ninja.outputs.which }} --version

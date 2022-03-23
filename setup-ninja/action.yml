@@ -1,0 +1,17 @@
+name: Setup Ninja
+description: Install a specific version of the Ninja build tool.
+author: Jordan Mackie
+inputs:
+  release-version:
+    description: Ninja release version, see https://github.com/ninja-build/ninja/releases
+    default: v1.10.2
+    required: false
+  platform:
+    description: Override default platform detection logic. Accepted values are [linux, mac, win]
+    required: false
+outputs:
+  which:
+    description: Full (absolute) path to the installed ninja executable.
+runs:
+  using: node12
+  main: ./index.js
