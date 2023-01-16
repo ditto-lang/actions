@@ -7,7 +7,7 @@
 
 A collection of GitHub actions to support ditto users. :octocat:
 
-## `ditto-lang/actions/setup-ninja@main`
+## `ditto-lang/actions/install-ninja@main`
 
 Install the [ninja build tool](https://ninja-build.org/).
 
@@ -19,7 +19,7 @@ jobs:
       # ...
 
       - name: Setup Ninja 🥷
-        uses: ditto-lang/actions/setup-ninja@main
+        uses: ditto-lang/actions/install-ninja@main
         with:
           release-version: v1.10.2
           platform: linux
@@ -27,7 +27,7 @@ jobs:
       - run: ninja --version
 ```
 
-See [action.yml](./setup-ninja/action.yml).
+See [action.yml](./install-ninja/action.yml).
 
 ### Inputs
 
