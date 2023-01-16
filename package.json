@@ -17,8 +17,8 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "husky install",
-    "build:all": "npm run build:setup-ninja",
-    "build:setup-ninja": "ncc build ./src/setup-ninja/index.ts --minify --out setup-ninja",
+    "build:all": "npm run build:install-ninja",
+    "build:install-ninja": "ncc build ./src/install-ninja/index.ts --minify --out install-ninja",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -24,7 +24,7 @@ jobs:
         id: verify-changed-files
         with:
           files: |
-            setup-ninja/index.js
+            install-ninja/index.js
       - if: steps.verify-changed-files.outputs.files_changed == 'true'
         uses: actions/github-script@v6
         with:
@@ -45,8 +45,8 @@ jobs:
       - run: npm install --omit optional --ignore-scripts
       - run: npm run format:check
 
-  setup-ninja:
-    name: Test setup-ninja action 🧪
+  install-ninja:
+    name: Test install-ninja action 🧪
     needs: [check-up-to-date]
     strategy:
       matrix:
@@ -64,8 +64,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup Ninja 🥷
-        id: setup-ninja
-        uses: ./setup-ninja
+        id: install-ninja
+        uses: ./install-ninja
         with:
           platform: ${{ matrix.ninja-platform }}
       - name: Print ninja version
@@ -73,4 +73,4 @@ jobs:
       - name: Print ninja.exe version
         run: ninja.exe --version
       - name: Print ninja output version
-        run: ${{ steps.setup-ninja.outputs.which }} --version
+        run: ${{ steps.install-ninja.outputs.which }} --version

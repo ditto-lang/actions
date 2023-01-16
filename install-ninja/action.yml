@@ -1,4 +1,4 @@
-name: Setup Ninja
+name: Install Ninja
 description: Install a specific version of the Ninja build tool.
 author: Jordan Mackie
 inputs:
