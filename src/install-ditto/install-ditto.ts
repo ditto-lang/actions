@@ -1,7 +1,10 @@
+import * as assert from "assert";
+import { createHash } from "crypto";
 import * as path from "path";
 import * as fs from "fs";
 import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
+import { HttpClient } from "@actions/http-client";
 
 export type ReleaseVersion = string;
 export type Platform = "linux" | "macos" | "windows";
@@ -90,10 +93,32 @@ export async function run(
   }
 
   // No cache hit, download...
-  const url = `https://github.com/ditto-lang/ditto/releases/download/${releaseVersion}/ditto-${platform}.zip`;
+  const zipUrl = `https://github.com/ditto-lang/ditto/releases/download/${releaseVersion}/ditto-${platform}.zip`;
 
-  core.info(`Downloading ditto from: ${url}`);
-  const downloadedZip = await tc.downloadTool(url);
+  core.info(`Downloading ditto from: ${zipUrl}`);
+  const downloadedZip = await tc.downloadTool(zipUrl);
+
+  // Check sha256
+  const checksumUrl = `https://github.com/ditto-lang/ditto/releases/download/${releaseVersion}/ditto-${platform}.sha256`;
+  core.info(`Downloading ditto checksum from: ${checksumUrl}`);
+  const client = new HttpClient();
+  const response = await client.get(checksumUrl);
+  assert(
+    response.message.statusCode === 200,
+    `Non-200 response from ${checksumUrl}`
+  );
+  const sha256Want = await response.readBody();
+  core.debug(`want sha256: ${sha256Want}`);
+  const sha256Got = createHash("sha256")
+    .update(fs.readFileSync(downloadedZip))
+    .digest("hex");
+  core.debug(`got sha256: ${sha256Got}`);
+  assert(
+    sha256Want === sha256Got,
+    `sha256 mismatch, got ${sha256Got} but expected ${sha256Want}`
+  );
+
+  // checksum is good, carry on...
   const extractedDir = await tc.extractZip(downloadedZip, destDir);
   const freshCachedDir = await tc.cacheDir(
     extractedDir,
