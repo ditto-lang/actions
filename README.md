@@ -14,11 +14,11 @@ Install the [ninja build tool](https://ninja-build.org/).
 ```yaml
 jobs:
   do-something-with-ninja:
-    runs-on: ubuntu-latest # or macos, or windows
+    runs-on: ubuntu-latest # or macos-latest, or windows-latest
     steps:
       # ...
 
-      - name: Setup Ninja 🥷
+      - name: Install Ninja 🥷
         uses: ditto-lang/actions/install-ninja@main
         with:
           release-version: v1.10.2
@@ -38,16 +38,49 @@ See [action.yml](./install-ninja/action.yml).
 
 ### Outputs
 
-| Name    | Description                                            |
-| ------- | ------------------------------------------------------ |
-| `which` | Full (absolute) path to the installed ninja executable |
+| Name    | Description                                              |
+| ------- | -------------------------------------------------------- |
+| `which` | Full (absolute) path to the installed `ninja` executable |
+
+## `ditto-lang/actions/install-ditto@main`
+
+Install the [ditto] compiler.
+
+```yaml
+jobs:
+  do-something-with-ditto:
+    runs-on: ubuntu-latest # or macos-latest, or windows-latest
+    steps:
+      # ...
+
+      - name: Install ditto
+        uses: ditto-lang/actions/install-ditto@main
+        with:
+          release-version: 0.0.3
+          platform: linux
+
+      - run: ditto --version
+```
+
+See [action.yml](./install-ninja/action.yml).
+
+### Inputs
+
+| Name              | Description                       | Type                        | Default    |
+| ----------------- | --------------------------------- | --------------------------- | ---------- |
+| `release-version` | Version tag from [ditto releases] | string                      | v0.0.3     |
+| `platform`        | Override platform detection logic | `linux \| macos \| windows` | (detected) |
+
+### Outputs
+
+| Name    | Description                                              |
+| ------- | -------------------------------------------------------- |
+| `which` | Full (absolute) path to the installed `ditto` executable |
 
 ## `ditto-lang/actions/setup-ditto@main`
 
-> Coming soon: install `ditto`
-
-## `ditto-lang/actions/ditto@main`
-
 > Coming soon: run `ditto` commands with proper env setup etc.
 
+[ditto]: https://github.com/ditto-lang/ditto
+[ditto releases]: https://github.com/ditto-lang/ditto/releases
 [ninja releases]: https://github.com/ninja-build/ninja/releases
