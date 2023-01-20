@@ -17,8 +17,9 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "husky install",
-    "build:all": "npm run build:install-ninja",
+    "build:all": "npm run build:install-ninja && npm run build:install-ditto",
     "build:install-ninja": "ncc build ./src/install-ninja/index.ts --minify --out install-ninja",
+    "build:install-ditto": "ncc build ./src/install-ditto/index.ts --minify --out install-ditto",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

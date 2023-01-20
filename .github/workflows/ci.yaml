@@ -63,7 +63,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Setup Ninja 🥷
+      - name: Install Ninja 🥷
         id: install-ninja
         uses: ./install-ninja
         with:
@@ -74,3 +74,33 @@ jobs:
         run: ninja.exe --version
       - name: Print ninja output version
         run: ${{ steps.install-ninja.outputs.which }} --version
+
+  install-ditto:
+    name: Test install-ditto action 🧪
+    needs: [check-up-to-date]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            ditto-platform: linux
+          - os: macos-latest
+            ditto-platform: macos
+          - os: windows-latest
+            ditto-platform: windows
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Install ditto
+        id: install-ditto
+        uses: ./install-ditto
+        with:
+          platform: ${{ matrix.ditto-platform }}
+      - name: Print ditto version
+        run: ditto --version
+      - name: Print ditto.exe version
+        run: ditto.exe --version
+      - name: Print ditto output version
+        run: ${{ steps.install-ditto.outputs.which }} --version

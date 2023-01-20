@@ -4,7 +4,7 @@ import * as core from "@actions/core";
 import * as tc from "@actions/tool-cache";
 
 export type ReleaseVersion = string;
-export type Platform = "linux" | "mac" | "win";
+export type Platform = "linux" | "macos" | "windows";
 
 export type Inputs = {
   releaseVersion: ReleaseVersion;
@@ -16,17 +16,17 @@ type Outputs = {
 };
 
 function isValidNinjaPlatform(platform: string): platform is Platform {
-  return ["linux", "mac", "win"].includes(platform);
+  return ["linux", "macos", "windows"].includes(platform);
 }
 
 function detectPlatform(): Platform | null {
   switch (process.platform) {
     case "win32":
-      return "win";
+      return "windows";
     case "linux":
       return "linux";
     case "darwin":
-      return "mac";
+      return "macos";
     default:
       return null;
   }
@@ -45,7 +45,7 @@ function getPlatformInput(): Platform {
     return input;
   }
   throw new Error(
-    `Invalid platform input: ${input} (expected one of "linux", "mac" or "win")`
+    `Invalid platform input: ${input} (expected one of "linux", "macos" or "windows")`
   );
 }
 
@@ -60,27 +60,27 @@ function getInputs(): Inputs {
 
 function doInstall(dir: string, binPath: string, symlinkPath: string) {
   fs.chmodSync(binPath, 755);
-  // Make sure that both `ninja` and `ninja.exe` are available to every OS
+  // Make sure that both `ditto` and `ditto.exe` are available to every OS
   // for simplicity (don't need to switch on OS, just call one or the other in
   // all cases)
   fs.symlinkSync(binPath, symlinkPath);
   core.addPath(dir);
-  core.info(`ninja installed to: ${dir}`);
+  core.info(`ditto installed to: ${dir}`);
 }
 
 function install(dir: string, platform: Platform): Outputs {
   const [binPath, symlinkPath] =
-    platform === "win"
-      ? [path.join(dir, "ninja.exe"), path.join(dir, "ninja")]
-      : [path.join(dir, "ninja"), path.join(dir, "ninja.exe")];
+    platform === "windows"
+      ? [path.join(dir, "ditto.exe"), path.join(dir, "ditto")]
+      : [path.join(dir, "ditto"), path.join(dir, "ditto.exe")];
   doInstall(dir, binPath, symlinkPath);
   return { which: binPath };
 }
 
 export async function run(
   { platform, releaseVersion }: Inputs,
-  toolName: string = "ninja",
-  destDir: string = "ninja-release"
+  toolName: string = "ditto",
+  destDir: string = "ditto-release"
 ): Promise<Outputs> {
   const cachedDir = tc.find(toolName, releaseVersion);
   if (cachedDir) {
@@ -90,13 +90,10 @@ export async function run(
   }
 
   // No cache hit, download...
-  const url = `https://github.com/ninja-build/ninja/releases/download/${releaseVersion}/ninja-${platform}.zip`;
+  const url = `https://github.com/ditto-lang/ditto/releases/download/${releaseVersion}/ditto-${platform}.zip`;
 
-  core.info(`Downloading ninja from: ${url}`);
+  core.info(`Downloading ditto from: ${url}`);
   const downloadedZip = await tc.downloadTool(url);
-
-  // TODO: check against sha256
-
   const extractedDir = await tc.extractZip(downloadedZip, destDir);
   const freshCachedDir = await tc.cacheDir(
     extractedDir,
