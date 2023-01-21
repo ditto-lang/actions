@@ -1,0 +1,21 @@
+name: Setup Ditto
+description: Install and configure a specific version of the Ditto compiler.
+author: Jordan Mackie
+inputs:
+  release-version:
+    description: Ditto release version, see https://github.com/ditto-lang/ditto/releases
+    default: 0.0.3
+    required: false
+  platform:
+    description: Override default platform detection logic. Accepted values are [linux, macos, windows]
+    required: false
+outputs:
+  which:
+    description: Full (absolute) path to the installed ditto executable.
+  cache-dir:
+    description: Directory that the ditto executable will use for caching, pass this to `@actions/cache`
+  which-ninja:
+    description: Full (absolute) path to the installed ninja executable.
+runs:
+  using: node12
+  main: ./index.js

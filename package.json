@@ -17,15 +17,18 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "husky install",
-    "build:all": "npm run build:install-ninja && npm run build:install-ditto",
-    "build:install-ninja": "ncc build ./src/install-ninja/index.ts --minify --out install-ninja",
+    "build:all": "npm run build:setup-ditto && npm run build:install-ditto && npm run build:install-ninja",
+    "build:setup-ditto": "ncc build ./src/setup-ditto/index.ts --minify --out setup-ditto",
     "build:install-ditto": "ncc build ./src/install-ditto/index.ts --minify --out install-ditto",
+    "build:install-ninja": "ncc build ./src/install-ninja/index.ts --minify --out install-ninja",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@actions/cache": "^3.1.2",
     "@actions/core": "1.10.0",
     "@actions/http-client": "^2.0.1",
+    "@actions/io": "^1.1.2",
     "@actions/tool-cache": "2.0.1"
   },
   "devDependencies": {
