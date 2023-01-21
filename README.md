@@ -7,40 +7,9 @@
 
 A collection of GitHub actions to support ditto users. :octocat:
 
-## `ditto-lang/actions/install-ninja@main`
+## `ditto-lang/actions/setup-ditto@main`
 
-Install the [ninja build tool](https://ninja-build.org/).
-
-```yaml
-jobs:
-  do-something-with-ninja:
-    runs-on: ubuntu-latest # or macos-latest, or windows-latest
-    steps:
-      # ...
-
-      - name: Install Ninja 🥷
-        uses: ditto-lang/actions/install-ninja@main
-        with:
-          release-version: v1.10.2
-          platform: linux
-
-      - run: ninja --version
-```
-
-See [action.yml](./install-ninja/action.yml).
-
-### Inputs
-
-| Name              | Description                       | Type                  | Default    |
-| ----------------- | --------------------------------- | --------------------- | ---------- |
-| `release-version` | Version tag from [ninja releases] | string                | v1.10.2    |
-| `platform`        | Override platform detection logic | `linux \| mac \| win` | (detected) |
-
-### Outputs
-
-| Name    | Description                                              |
-| ------- | -------------------------------------------------------- |
-| `which` | Full (absolute) path to the installed `ninja` executable |
+> Coming soon: run `ditto` commands with proper env setup etc.
 
 ## `ditto-lang/actions/install-ditto@main`
 
@@ -77,9 +46,40 @@ See [action.yml](./install-ninja/action.yml).
 | ------- | -------------------------------------------------------- |
 | `which` | Full (absolute) path to the installed `ditto` executable |
 
-## `ditto-lang/actions/setup-ditto@main`
+## `ditto-lang/actions/install-ninja@main`
 
-> Coming soon: run `ditto` commands with proper env setup etc.
+Install the [ninja build tool](https://ninja-build.org/).
+
+```yaml
+jobs:
+  do-something-with-ninja:
+    runs-on: ubuntu-latest # or macos-latest, or windows-latest
+    steps:
+      # ...
+
+      - name: Install Ninja 🥷
+        uses: ditto-lang/actions/install-ninja@main
+        with:
+          release-version: v1.10.2
+          platform: linux
+
+      - run: ninja --version
+```
+
+See [action.yml](./install-ninja/action.yml).
+
+### Inputs
+
+| Name              | Description                       | Type                  | Default    |
+| ----------------- | --------------------------------- | --------------------- | ---------- |
+| `release-version` | Version tag from [ninja releases] | string                | v1.10.2    |
+| `platform`        | Override platform detection logic | `linux \| mac \| win` | (detected) |
+
+### Outputs
+
+| Name    | Description                                              |
+| ------- | -------------------------------------------------------- |
+| `which` | Full (absolute) path to the installed `ninja` executable |
 
 [ditto]: https://github.com/ditto-lang/ditto
 [ditto releases]: https://github.com/ditto-lang/ditto/releases
