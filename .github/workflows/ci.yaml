@@ -104,3 +104,33 @@ jobs:
         run: ditto.exe --version
       - name: Print ditto output version
         run: ${{ steps.install-ditto.outputs.which }} --version
+
+  setup-ditto:
+    name: Test setup-ditto action 🧪
+    needs: [check-up-to-date]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            ditto-platform: linux
+          - os: macos-latest
+            ditto-platform: macos
+          - os: windows-latest
+            ditto-platform: windows
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup ditto
+        id: setup-ditto
+        uses: ./setup-ditto
+        with:
+          platform: ${{ matrix.ditto-platform }}
+      - name: Print ditto version
+        run: ${{ steps.setup-ditto.outputs.which }} --version
+      - name: Print ninja version
+        run: ${{ steps.setup-ditto.outputs.which-ninja }} --version
+      - name: Print ditto cache dir
+        run: echo ${{ steps.setup-ditto.outputs.cache-dir }}

@@ -18,7 +18,7 @@ type Outputs = {
   which: string;
 };
 
-function isValidNinjaPlatform(platform: string): platform is Platform {
+function isValidDittoPlatform(platform: string): platform is Platform {
   return ["linux", "macos", "windows"].includes(platform);
 }
 
@@ -44,7 +44,7 @@ function getPlatformInput(): Platform {
     }
     return detected;
   }
-  if (isValidNinjaPlatform(input)) {
+  if (isValidDittoPlatform(input)) {
     return input;
   }
   throw new Error(
@@ -52,7 +52,7 @@ function getPlatformInput(): Platform {
   );
 }
 
-function getInputs(): Inputs {
+export function getInputs(): Inputs {
   const releaseVersion = core.getInput("release-version");
   const platform = getPlatformInput();
   return {

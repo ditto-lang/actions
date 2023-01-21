@@ -1,5 +1,6 @@
 node_modules
 
 # Generated (and minifed) files
-install-ninja/index.js
+setup-ditto/index.js
 install-ditto/index.js
+install-ninja/index.js
