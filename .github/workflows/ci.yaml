@@ -26,7 +26,7 @@ jobs:
           files: |
             install-ninja/index.js
       - if: steps.verify-changed-files.outputs.files_changed == 'true'
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             core.setFailed('Generated files not up to date!')
