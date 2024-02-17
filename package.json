@@ -41,7 +41,7 @@
     "*.{yml,yaml,ts,md,json}": "prettier --write"
   },
   "optionalDependencies": {
-    "husky": "8.0.1",
+    "husky": "9.0.11",
     "lint-staged": "13.0.0"
   }
 }
