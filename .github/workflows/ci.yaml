@@ -20,7 +20,7 @@ jobs:
           cache: "npm"
       - run: npm install --omit optional --ignore-scripts
       - run: npm run build:all
-      - uses: tj-actions/verify-changed-files@v9
+      - uses: tj-actions/verify-changed-files@v19
         id: verify-changed-files
         with:
           files: |
